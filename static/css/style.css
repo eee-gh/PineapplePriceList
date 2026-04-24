@@ -1,0 +1,33 @@
+body {
+  background-color: #fff6c7;
+}
+
+nav {
+  background-color: #dbdb34;
+  padding: 1rem;
+}
+
+/* Список навигации */
+nav ul {
+  list-style: none; /* Убираем маркеры списка */
+  margin: 0;
+  padding: 0;
+  display: flex; /* Используем Flexbox для горизонтального расположения */
+  justify-content: right; /* Центрируем пункты меню */
+  gap: 20px; /* Расстояние между пунктами */
+}
+
+/* Ссылки */
+nav a {
+  text-decoration: none; /* Убираем подчеркивание */
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 0.5rem 1rem;
+  transition: background 0.3s; /* Плавный эффект при наведении */
+}
+
+/* Эффект при наведении */
+nav a:hover {
+  background-color: #b92929;
+  border-radius: 4px;
+}

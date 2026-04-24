@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>{{ title }}</title>
+</head>
+<body>
+<nav class="navbar">
+    <ul>
+        {% if False %}
+        <a href="/logout">{{ current_user.name }}</a>
+        {% else %}
+        <p>
+            <a href="/login">Вход</a>
+            <a href="/register">Регистрация</a>
+        </p>
+        {% endif %}
+    </ul>
+    <h1><a href="/">Pineapple Price List</a></h1>
+</nav>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
