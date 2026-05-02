@@ -26,8 +26,48 @@ nav a {
   transition: background 0.3s; /* Плавный эффект при наведении */
 }
 
+nav p a {
+  background-color: #93cf23;
+  border-radius: 4px;
+}
+
 /* Эффект при наведении */
 nav a:hover {
+  background-color: #b92929;
+  border-radius: 4px;
+}
+
+.login_box {
+  text-align: center;
+  border: 2px solid #000000;
+  border-radius: 20px;
+  padding: 20px;
+  background-color: #dbdb34;
+  width: 300px;
+  overflow: hidden; 
+  margin: 0 auto;
+}
+
+.error {
+  color: #d40707;
+}
+
+#auth{
+  text-align: center;
+  font-size: 50px;
+  margin: 20px;
+}
+
+.form-control {
+  color: #7231bd;
+}
+
+#username {
+  background-color: #93cf23;
+  border-radius: 4px;
+}
+
+#username:hover {
   background-color: #b92929;
   border-radius: 4px;
 }

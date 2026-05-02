@@ -8,8 +8,8 @@
 <body>
 <nav class="navbar">
     <ul>
-        {% if False %}
-        <a href="/logout">{{ current_user.name }}</a>
+        {% if current_user.is_authenticated %}
+        <a id="username" href="{{ '<u>' + current_user.name }}">{{ current_user.name }}</a>
         {% else %}
         <p>
             <a href="/login">Вход</a>
