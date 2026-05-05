@@ -2,9 +2,34 @@
 
 {% block content %}
 
-<h1>Главная страница</h1>
-{% for i in range(100) %}
-<a>{{ i }}<br></a>
-{% endfor %}
+<form class="board_box" id="board_box">
+    <p>Выберите доску:</p>
+    <select id="board" name="board">
+        {% for i in boards %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+    </select>
+    <button id="board_button" onclick="openBoard()">Открыть</button>
+</form>
+
+<script>
+    const select = document.getElementById('board_box');
+    const button = document.getElementById('board_button');
+
+    function navigate() {
+        const url = select.value;
+        if (url) {
+            window.location.href = "<b>" + url;
+        } else {
+            alert("Перейти?");
+        }
+    }
+
+    function openBoard() {
+        open("<b>" + board.value, '_self');
+    }
+
+    button.addEventListener('click', navigate);
+</script>
 
 {% endblock %}

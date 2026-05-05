@@ -71,3 +71,20 @@ nav a:hover {
   background-color: #b92929;
   border-radius: 4px;
 }
+
+.board_box {
+  text-align: center;
+}
+
+.board_box p {
+  font-size: 50px;
+  margin: 20px;
+}
+
+.board_box select {
+  font-size: 30px;
+}
+
+.board_box button {
+  font-size: 30px;
+}

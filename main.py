@@ -23,7 +23,9 @@ def load_user(name):
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Главная')
+    db_sess = db_session.create_session()
+    b = [i[0] for i in db_sess.query(Board.name).all()]
+    return render_template('index.html', title='Главная', boards=b)
 
 
 @app.route('/login', methods=['GET', 'POST'])
