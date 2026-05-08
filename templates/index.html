@@ -19,14 +19,14 @@
     function navigate() {
         const url = select.value;
         if (url) {
-            window.location.href = "<b>" + url;
+            window.location.href = "/board/" + url;
         } else {
             alert("Перейти?");
         }
     }
 
     function openBoard() {
-        open("<b>" + board.value, '_self');
+        open("/board/" + board.value, '_self');
     }
 
     button.addEventListener('click', navigate);

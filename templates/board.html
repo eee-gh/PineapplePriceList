@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="greet">
+    <h2>Добро пожаловать на {{ name }}!</h2><br>
+    {% if descr %}
+    <p>{{ descr }}</p>
+    {% else %}
+    <p>У этой доски нет описания.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
