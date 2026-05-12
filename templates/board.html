@@ -10,5 +10,10 @@
     <p>У этой доски нет описания.</p>
     {% endif %}
 </div>
+{% if current_user.is_authenticated %}
+    <a href="/board/{{ name }}/new"><button>Создать тред</button></a>
+{% else %}
+    <p>Вы должны быть зарегистрированным, чтобы создавать треды</p>
+{% endif %}
 
 {% endblock %}

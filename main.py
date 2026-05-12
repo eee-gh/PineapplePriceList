@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Flask
 from flask import Flask, render_template, redirect, make_response, jsonify
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
@@ -7,6 +9,7 @@ from data.boards import Board
 from data.posts import Post
 from forms.loginform import LoginForm
 from forms.registerform import RegisterForm
+from forms.treads import TreadForm
 import secrets
 
 app = Flask(__name__)
@@ -86,10 +89,10 @@ def user_list():
 @app.route('/board/<board>')
 def show_board(board):
     db_sess = db_session.create_session()
-    # data = db_sess.query(f'SELECT * FROM boards WHERE name = "{board}"')
     data = db_sess.query(Board).filter(Board.name == board).first()
     return render_template('board.html', title=board, name=data.name,
-                           descr=data.description, pic=data.picture, cr_dt=data.created_date, cr_by=data.created_by)
+                           descr=data.description, pic=data.picture, cr_dt=data.created_date, cr_by=data.created_by,
+                           posts=[])
 
 
 @app.route('/user/<user>')
@@ -100,6 +103,25 @@ def user_profile(user):
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
     return f'Пост №: {post_id}'
+
+
+@app.route('/board/<board>/new', methods=['GET', 'POST'])
+@login_required
+def create_tread(board):
+    form = TreadForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        tread = Post()
+        tread.reply_to = -1
+        tread.content = form.content.data
+        tread.image = form.image.data
+        tread.file = tread.id.data
+        tread.created_date = datetime.datetime.now()
+        tread.board_on = board
+        tread.created_by = current_user.name
+        db_sess.commit()
+        return redirect('/')
+    return render_template('new_tread.html', title='Создание треда', form=form)
 
 
 if __name__ == '__main__':
