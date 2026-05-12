@@ -27,4 +27,6 @@ Pineapple Price List (PPL)
 - __post__ - Объект поста в таблице.
 - __user__ - Объект пользователя в таблице.
 ### Описание технологий
-Данный проект использует билиотеки Flask, flask_wtf, sqlalchemy.
+Данный проект использует билиотеки Flask, flask_wtf, sqlalchemy, werkzeug.
+
+# [Презентация](https://docs.google.com/presentation/d/1TmChXXbolwpuR8ti1XUcT6kdhZvSY6cQ/edit?usp=sharing&ouid=113776999526641735703&rtpof=true&sd=true)
