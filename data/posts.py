@@ -9,7 +9,7 @@ class Post(SqlAlchemyBase):
     __tablename__ = 'posts'
 
     reply_to = sqlalchemy.Column(sqlalchemy.String, primary_key=True)
-    id = sqlalchemy.Column(sqlalchemy.Integer, autoincrement=True, unique=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, unique=True, nullable=False)
     content = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     image = sqlalchemy.Column(sqlalchemy.BLOB, nullable=True)
     file = sqlalchemy.Column(sqlalchemy.String, nullable=True)

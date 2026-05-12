@@ -1,8 +1,13 @@
+import base64
 import datetime
+import os
 
 from flask import Flask
 from flask import Flask, render_template, redirect, make_response, jsonify
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
+from sqlalchemy import func
+from werkzeug.utils import secure_filename
+
 from data import db_session, boards
 from data.users import User
 from data.boards import Board
@@ -113,12 +118,26 @@ def create_tread(board):
         db_sess = db_session.create_session()
         tread = Post()
         tread.reply_to = -1
+        nid = db_sess.query(func.max(Post.id)).scalar()
+        if nid is None: nid = 0
+        nid += 1
+        tread.id = nid
         tread.content = form.content.data
-        tread.image = form.image.data
-        tread.file = tread.id.data
         tread.created_date = datetime.datetime.now()
         tread.board_on = board
         tread.created_by = current_user.name
+
+        if form.image.data:
+            f = form.image.data
+            tread.image = f.read()
+
+        if form.file.data:
+            f = form.file.data
+            filename = secure_filename(f.filename)
+            f.save(os.path.join('uploads', filename))
+            tread.file = filename
+
+        db_sess.add(tread)
         db_sess.commit()
         return redirect('/')
     return render_template('new_tread.html', title='Создание треда', form=form)
