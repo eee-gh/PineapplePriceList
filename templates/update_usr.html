@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="head">Настройка профиля</h1>
+<form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div>
+        {{ form.image.label }}<br>
+        {{ form.image(id="photo-input") }}
+        <br>
+        <img id="preview" src="#" alt="Предпросмотр" style="display:none; max-width: 200px; margin-top: 10px;">
+    </div>
+
+    <p>
+        {{ form.description.label }}<br>
+        {{ form.description(class="form-control") }}<br>
+        {% for error in form.description.errors %}
+    <p class="error">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+</form>
+
+<script>
+    document.getElementById('photo-input').onchange = function (evt) {
+        const [file] = this.files;
+        if (file) {
+            const preview = document.getElementById('preview');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        }
+    };
+</script>
+
+{% endblock %}

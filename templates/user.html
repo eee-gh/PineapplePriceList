@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="user">
+    {% if current_user.is_authenticated and current_user.name == u['name'] %}
+
+    <div class="post-actions">
+        <a href="/user/{{ u['name'] }}/update">
+            <button type="button">Редактировать профиль</button>
+        </a>
+        <a href="/logout">
+            <button type="button">Выйти из аккаунта</button>
+        </a>
+    </div>
+
+    {% endif %}
+    <h1>Пользователь: {{ u['name'] }}</h1>
+    {% if u['pic'] %}
+    <div class="file-container">
+        <img class='post-image' src="data:image/jpeg;base64,{{ u['pic'] }}" alt="Картинка">
+    </div>
+    {% endif %}
+    {% if u['descr'] %}
+    <blockquote class="post-message">{{ u['descr'] }}</blockquote>
+    {% else %}
+    <p class="post-message">У этого пользователя нет описания</p>
+    {% endif %}
+</div>
+
+{% endblock %}

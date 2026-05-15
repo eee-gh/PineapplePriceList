@@ -3,17 +3,118 @@
 {% block content %}
 
 <div class="greet">
-    <h2>Добро пожаловать на {{ name }}!</h2><br>
-    {% if descr %}
-    <p>{{ descr }}</p>
+    <h2>Добро пожаловать на "{{ d['name'] }}"!</h2><br>
+    {% if d['descr'] %}
+    <p>{{ d['descr'] }}</p>
     {% else %}
     <p>У этой доски нет описания.</p>
     {% endif %}
 </div>
-{% if current_user.is_authenticated %}
-    <a href="/board/{{ name }}/new"><button>Создать тред</button></a>
-{% else %}
-    <p>Вы должны быть зарегистрированным, чтобы создавать треды</p>
+
+<div class="new-thread">
+    {% if current_user.is_authenticated %}
+    <a href="/board/{{ d['name'] }}/new">
+        <button>Создать тред</button>
+    </a>
+    {% else %}
+    <p class="error">Вы должны быть зарегистрированным, чтобы создавать треды</p>
+    {% endif %}
+</div>
+<br>
+{% for t in threads %}
+
+<div class="thread-start">
+    <div class="post-info">
+        <a class="ans-src" href="/board/{{ t['thread']['board_on'] }}">
+            <span class="reply-to">тред на "{{ t['thread']['board_on'] }}"</span>
+        </a>
+        <a class="usr-src" href="/user/{{ t['thread']['created_by'] }}"><span class="poster-name">{{ t['thread']['created_by'] }}</span></a>
+        <span class="post-date">{{ t['thread']['created_date'] }}</span>
+        <span class="post-id">id: {{ t['thread']['id'] }}</span>
+    </div>
+
+    <div class="post-body">
+        {% if t['thread']['image'] %}
+        <div class="file-container">
+            <img class='post-image' src="data:image/jpeg;base64,{{ t['thread']['image'] }}" alt="Картинка">
+        </div>
+        {% endif %}
+        <blockquote class="post-message">{{ t['thread']['content'] | greentext | safe }}</blockquote>
+    </div>
+    {% if t['thread']['file'] %}
+    <a href="/uploads/{{ t['thread']['id'] }}.data?name={{ t['thread']['file'] }}">Прикреплённый файл: {{
+        t['thread']['file'] }}</a>
+    {% endif %}
+    <div class="post-actions">
+        <a href="/post/{{ t['thread']['id'] }}">
+            <button type="button">Открыть тред</button>
+        </a>
+        {% if current_user.is_authenticated %}
+        <a href="/post/{{ t['thread']['id'] }}/reply">
+            <button type="button">Ответить</button>
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+{% if t['replies']|length > 0 %}
+
+<div class="post-comment">
+    {% for r in t['replies'] %}
+
+    <div class="comment-box">
+        <div class="post-info">
+            <a class="ans-src" href="/post/{{ r['reply_to'] }}">
+                <span class="reply-to">ответ на <{{ r['reply_to'] }}></span>
+            </a>
+            <a class="usr-src" href="/user/{{ r['created_by'] }}"><span
+                    class="poster-name">{{ r['created_by'] }}</span></a>
+            <span class="post-date">{{ r['created_date'] }}</span>
+            <span class="post-id">id: {{ r['id'] }}</span>
+        </div>
+
+        <div class="post-body">
+            {% if r['image'] %}
+            <div class="file-container">
+                <img class='post-image' src="data:image/jpeg;base64,{{ r['image'] }}" alt="Картинка">
+            </div>
+            {% endif %}
+            <blockquote class="post-message">{{ r['content'] | greentext | safe }}</blockquote>
+        </div>
+        {% if r['file'] %}
+        <a href="/uploads/{{ r['id'] }}.data?name={{ r['file'] }}">Прикреплённый файл: {{ r['file'] }}</a>
+        {% endif %}
+        <div class="post-actions">
+            <a href="/post/{{ r['id'] }}">
+                <button type="button">Открыть</button>
+            </a>
+            {% if current_user.is_authenticated %}
+            <a href="/post/{{ r['id'] }}/reply">
+                <button type="button">Ответить</button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
 {% endif %}
+
+<hr>
+
+{% endfor %}
+
+<div class="pagination">
+    {% if page > 1 %}
+    <a href="/board/{{ d['name'] }}/{{ page - 1 }}">«</a>
+    {% endif %}
+
+    <span class="current">{{ page }}</span>
+
+    {% if next_p %}
+    <a href="/board/{{ d['name'] }}/{{ page + 1 }}">»</a>
+    {% endif %}
+</div>
 
 {% endblock %}

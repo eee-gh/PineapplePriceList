@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Создание треда</h1>
+<h1 class="head">Создание треда на <a class="ans-src" href="/board/{{ board }}">"{{ board }}"</a></h1>
 <form action="" method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
 
@@ -17,10 +17,10 @@
         {{ form.content.label }}<br>
         {{ form.content(class="form-control") }}<br>
         {% for error in form.content.errors %}
-            <p class="error">
-                {{ error }}
-            </p>
-        {% endfor %}
+    <p class="error">
+        {{ error }}
+    </p>
+    {% endfor %}
     </p>
 
     <div style="margin-top: 20px;">

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="thread-start">
+    <div class="post-info">
+        {% if d['reply_to'] == -1 %}
+        <a class="ans-src" href="/board/{{ d['board_on'] }}">
+            <span class="reply-to">тред на "{{ d['board_on'] }}"</span>
+        </a>
+        {% else %}
+        <a class="ans-src" href="/post/{{ d['reply_to'] }}">
+            <span class="reply-to">ответ на <{{ d['reply_to'] }}></span>
+        </a>
+        {% endif %}
+        <a class="usr-src" href="/user/{{ d['created_by'] }}"><span class="poster-name">{{ d['created_by'] }}</span></a>
+        <span class="post-date">{{ d['created_date'] }}</span>
+        <span class="post-id">id: {{ d['id'] }}</span>
+        <a class="ans-src" href="/board/{{ d['board_on'] }}">"{{ d['board_on'] }}"</a>
+    </div>
+
+    <div class="post-body">
+        {% if d['image'] %}
+        <div class="file-container">
+            <img class='post-image' src="data:image/jpeg;base64,{{ d['image'] }}" alt="Картинка">
+        </div>
+        {% endif %}
+        <blockquote class="post-message">{{ d['content'] | greentext | safe }}</blockquote>
+    </div>
+    {% if d['file'] %}
+    <a href="/uploads/{{ d['id'] }}.data?name={{ d['file'] }}">Прикреплённый файл: {{ d['file'] }}</a>
+    {% endif %}
+    <div class="post-actions">
+        {% if current_user.is_authenticated %}
+        <a href="/post/{{ d['id'] }}/reply">
+            <button type="button">Ответить</button>
+        </a>
+        {% else %}
+        <p class="error">Отвечать могут только зарегистрированные пользователи</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="post-comment">
+    {% for r in repl %}
+
+    <div class="comment-box">
+        <div class="post-info">
+            <a class="ans-src" href="/post/{{ r['post']['reply_to'] }}">
+                <span class="reply-to">ответ на <{{ r['post']['reply_to'] }}></span>
+            </a>
+            <a class="usr-src" href="/user/{{ r['post']['created_by'] }}"><span
+                    class="poster-name">{{ r['post']['created_by'] }}</span></a>
+            <span class="post-date">{{ r['post']['created_date'] }}</span>
+            <span class="post-id">id: {{ r['post']['id'] }}</span>
+        </div>
+
+        <div class="post-body">
+            {% if r['post']['image'] %}
+            <div class="file-container">
+                <img class='post-image' src="data:image/jpeg;base64,{{ r['post']['image'] }}" alt="Картинка">
+            </div>
+            {% endif %}
+            <blockquote class="post-message">{{ r['post']['content'] | greentext | safe }}</blockquote>
+        </div>
+        {% if r['post']['file'] %}
+        <a href="/uploads/{{ r['post']['id'] }}.data?name={{ r['post']['file'] }}">Прикреплённый файл: {{
+            r['post']['file'] }}</a>
+        {% endif %}
+        <div class="post-actions">
+            <a href="/post/{{ r['post']['id'] }}">
+                <button type="button">Открыть</button>
+            </a>
+            {% if current_user.is_authenticated %}
+            <a href="/post/{{ r['post']['id'] }}/reply">
+                <button type="button">Ответить</button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if r['replies']|length > 0 %}
+    {% for rr in r['replies'] %}
+
+    <div class="comment-comment-box">
+        <div class="post-info">
+            <a class="ans-src" href="/post/{{ rr['reply_to'] }}">
+                <span class="reply-to">ответ на <{{ rr['reply_to'] }}></span>
+            </a>
+            <a class="usr-src" href="/user/{{ rr['created_by'] }}"><span
+                    class="poster-name">{{ rr['created_by'] }}</span></a>
+            <span class="post-date">{{ rr['created_date'] }}</span>
+            <span class="post-id">id: {{ rr['id'] }}</span>
+        </div>
+
+        <div class="post-body">
+            {% if rr['image'] %}
+            <div class="file-container">
+                <img class='post-image' src="data:image/jpeg;base64,{{ rr['image'] }}" alt="Картинка">
+            </div>
+            {% endif %}
+            <blockquote class="post-message">{{ rr['content'] | greentext | safe }}</blockquote>
+        </div>
+        {% if rr['file'] %}
+        <a href="/uploads/{{ rr['id'] }}.data?name={{ rr['file'] }}">Прикреплённый файл: {{ rr['file'] }}</a>
+        {% endif %}
+        <div class="post-actions">
+            <a href="/post/{{ rr['id'] }}">
+                <button type="button">Открыть</button>
+            </a>
+            {% if current_user.is_authenticated %}
+            <a href="/post/{{ rr['id'] }}/reply">
+                <button type="button">Ответить</button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+
+    <hr>
+
+    {% endfor %}
+</div>
+
+{% endblock %}

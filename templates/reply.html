@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="thread-start">
+    <div class="post-info">
+        {% if d['reply_to'] == -1 %}
+        <a class="ans-src" href="/board/{{ d['board_on'] }}">
+            <span class="reply-to">тред на "{{ d['board_on'] }}"</span>
+        </a>
+        {% else %}
+        <a class="ans-src" href="/post/{{ d['reply_to'] }}">
+            <span class="reply-to">ответ на <{{ d['reply_to'] }}></span>
+        </a>
+        {% endif %}
+        <a class="usr-src" href="/user/{{ d['created_by'] }}"><span class="poster-name">{{ d['created_by'] }}</span></a>
+        <span class="post-date">{{ d['created_date'] }}</span>
+        <span class="post-id">id: {{ d['id'] }}</span>
+        <a class="ans-src" href="/board/{{ d['board_on'] }}">"{{ d['board_on'] }}"</a>
+    </div>
+
+    <div class="post-body">
+        {% if d['image'] %}
+        <div class="file-container">
+            <img class='post-image' src="data:image/jpeg;base64,{{ d['image'] }}" alt="Картинка">
+        </div>
+        {% endif %}
+        <blockquote class="post-message">{{ d['content'] | greentext | safe }}</blockquote>
+    </div>
+    {% if d['file'] %}
+    <a href="/uploads/{{ d['id'] }}.data?name={{ d['file'] }}">Прикреплённый файл: {{ d['file'] }}</a>
+    {% endif %}
+</div>
+<hr>
+
+<form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div>
+        {{ form.image.label }}<br>
+        {{ form.image(id="photo-input") }}
+        <br>
+        <img id="preview" src="#" alt="Предпросмотр" style="display:none; max-width: 200px; margin-top: 10px;">
+    </div>
+
+    <p>
+        {{ form.content.label }}<br>
+        {{ form.content(class="form-control") }}<br>
+        {% for error in form.content.errors %}
+    <p class="error">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+
+    <div style="margin-top: 20px;">
+        {{ form.file.label }}<br>
+        {{ form.file() }}
+    </div>
+
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+</form>
+
+<script>
+    document.getElementById('photo-input').onchange = function (evt) {
+        const [file] = this.files;
+        if (file) {
+            const preview = document.getElementById('preview');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        }
+    };
+</script>
+
+{% endblock %}
