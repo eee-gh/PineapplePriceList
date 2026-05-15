@@ -30,3 +30,4 @@ Pineapple Price List (PPL)
 Данный проект использует билиотеки Flask, flask_wtf, sqlalchemy, werkzeug.
 
 # [Презентация](https://docs.google.com/presentation/d/1TmChXXbolwpuR8ti1XUcT6kdhZvSY6cQ/edit?usp=sharing&ouid=113776999526641735703&rtpof=true&sd=true)
+# 213.165.52.217
