@@ -19,7 +19,7 @@ from forms.user import UserForm
 import secrets
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
+app.config['SECRET_KEY'] = '1234567887654321'
 login_manager = LoginManager()
 login_manager.init_app(app)
 UPLOAD_FOLDER = os.path.join(app.root_path, 'uploads')
