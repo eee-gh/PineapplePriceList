@@ -291,7 +291,7 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 
+db_session.global_init("db/base.db")
+db_sess = db_session.create_session()
 if __name__ == '__main__':
-    db_session.global_init("db/base.db")
-    db_sess = db_session.create_session()
     app.run(port=8080, host='127.0.0.1', debug=False)
